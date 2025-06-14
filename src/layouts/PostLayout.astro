@@ -1,0 +1,61 @@
+---
+import Layout from "./Layout.astro";
+import type { CollectionEntry } from "astro:content";
+
+type Props = CollectionEntry<"blog">["data"];
+const post = Astro.props as Props;
+
+import TagPill from "../components/TagPill.astro";
+---
+
+<Layout title={post.title} description={post.description}>
+    <div>
+        <article>
+            <h1 class="text-3xl font-extrabold">
+                {post.title}
+            </h1>
+            <p class="text-stone-500 text-base mt-2 mb-4">
+                {
+                    post.pubDate.toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                    })
+                }
+                &middot;
+                {post.author.name}
+            </p>
+            <div>
+                {
+                    post.tags && post.tags.length > 0 ? (
+                        <ul class="flex flex-wrap gap-2 mb-4">
+                            {post.tags.map((tag) => (
+                                <li>
+                                    <TagPill
+                                        href={`/tags/${tag}/`}
+                                        title={tag}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : null
+                }
+            </div>
+            <div
+                class="prose mx-auto !max-w-none prose-pre:mx-0 sm:prose-pre:mx-8 prose-pre:rounded- [&_svg]:max-h-[40rem] [&_svg]:mx-auto text-lg"
+            >
+                <slot />
+            </div>
+        </article>
+    </div>
+    <!-- Giscus Comments here! -->
+    <section id="comments">
+        <h2>Comments</h2>
+        <script>
+            import "giscus";
+        </script>
+        <giscus-widget
+            repo="your-github-username/your-repo-name"
+            repo-id="YOUR_REPO_ID"></giscus-widget>
+    </section>
+</Layout>

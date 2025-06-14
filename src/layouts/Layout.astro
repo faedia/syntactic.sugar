@@ -1,0 +1,37 @@
+---
+interface Props {
+    title?: string;
+    description?: string;
+}
+const { title, description = "" } = Astro.props;
+
+import { config } from "../site.config";
+
+import "../styles/global.css";
+
+import Nav from "./Nav.astro";
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title ? `${title} - ${config.title}` : config.title}</title>
+    </head>
+    <body class="bg-stone-100 text-stone-900">
+        <Nav />
+    </body>
+    <main class="max-w-4xl mx-auto p-6 text-lg font-nunito">
+        <slot />
+    </main>
+    <footer>
+        <p
+            class="text-stone-500 text-center text-base mt-2 pb-5 pt-4 border-t border-stone-200"
+        >
+            &copy; {new Date().getFullYear()}
+            {config.author.name}. All rights reserved.
+        </p>
+    </footer>
+</html>

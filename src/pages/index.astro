@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import PostPreview from "../components/PostPreview.astro";
+const recentPosts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 5);
+---
+
+<Layout title="Home">
+    <section class="border-2 border-purple-600 p-8 rounded-sm mb-6">
+        <h1 class="text-4xl font-extrabold mb-6">About me</h1>
+        <p class="text-lg text-stone-700 mb-4">
+            Explore my latest thoughts, tutorials, and insights on web
+            development, design, and more.
+        </p>
+    </section>
+
+    <section class="border-2 border-purple-600 p-8 rounded-sm">
+        <h2 class="text-2xl font-bold mb-6">Recent Posts</h2>
+        <ul>
+            {
+                recentPosts.map((post) => (
+                    <li>
+                        <PostPreview post={post} />
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+</Layout>

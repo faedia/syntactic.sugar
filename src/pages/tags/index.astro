@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+
+const tags = (await getCollection("blog"))
+    .flatMap((post) => post.data.tags || [])
+    .filter((tag, index, self) => self.indexOf(tag) === index)
+    .sort();
+---
+
+<ul class="list-disc pl-6">
+    {
+        tags.map((tag) => (
+            <li>
+                <a
+                    href={`/tags/${tag}`}
+                    class="text-purple-800 hover:underline"
+                >
+                    {tag}
+                </a>
+            </li>
+        ))
+    }
+</ul>

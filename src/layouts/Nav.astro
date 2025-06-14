@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+import { config } from "../site.config";
+
+interface Link {
+    href: string;
+    title: string;
+    description: string;
+}
+
+const links: Link[] = [
+    {
+        href: "/blog",
+        title: "Blog",
+        description: "Read my latest posts",
+    },
+    {
+        href: "/tags",
+        title: "Tags",
+        description: "Browse posts by tags",
+    },
+    {
+        href: "https://github.com/faedia",
+        title: "GitHub",
+        description: "Visit my GitHub profile",
+    },
+];
+---
+
+<header class="border-b-2 border-purple-800 bg-stone-50">
+    <nav class="max-w-5xl mx-auto px-6">
+        <div class="flex flex-wrap justify-between items-center font-mono">
+            <!-- Left side: Title -->
+            <div class="flex items-center">
+                <a
+                    href="/"
+                    class="font-semibold text-2xl text-purple-800 hover:bg-purple-800 hover:text-stone-50 transition-colors p-1 mt-3 mb-3"
+                >
+                    {config.title}
+                </a>
+            </div>
+
+            <!-- Right side: Navigation items and mobile search icon -->
+            <div class="flex items-center space-x-4">
+                <!-- Navigation links -->
+                <div class="flex items-center space-x-6">
+                    {
+                        links
+                            .map((link) => (
+                                <a
+                                    href={link.href}
+                                    class="text-stone-700 hover:text-stone-900 font-medium transition-colors"
+                                    title={link.description}
+                                >
+                                    {link.title}
+                                </a>
+                            ))
+                            .flatMap((item, idx) => [
+                                item,
+                                idx < links.length - 1 ? <div>/</div> : null,
+                            ])
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

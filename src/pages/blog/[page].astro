@@ -1,0 +1,53 @@
+---
+// filepath: /src/pages/blog/[page].astro
+import Layout from "../../layouts/Layout.astro";
+import PostPreview from "../../components/PostPreview.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths({ paginate }) {
+    const allPosts = (await getCollection("blog")).sort(
+        (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+    );
+    const postsPerPage = 10;
+
+    return paginate(allPosts, {
+        pageSize: postsPerPage,
+    });
+}
+
+// All paginated data is passed on the "page" prop
+const { page } = Astro.props;
+---
+
+<Layout title="Blog">
+    <h2 class="text-2xl font-bold mb-6">Posts</h2>
+    <ul>
+        {
+            page.data.map((post) => (
+                <li>
+                    <PostPreview post={post} />
+                </li>
+            ))
+        }
+    </ul>
+    <nav class="flex justify-between mt-8">
+        {
+            page.url.prev ? (
+                <a href={page.url.prev} class="text-purple-600 hover:underline">
+                    ← Previous
+                </a>
+            ) : (
+                <span />
+            )
+        }
+        {
+            page.url.next ? (
+                <a href={page.url.next} class="text-purple-600 hover:underline">
+                    Next →
+                </a>
+            ) : (
+                <span />
+            )
+        }
+    </nav>
+</Layout>

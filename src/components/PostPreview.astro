@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TagPill from "./TagPill.astro";
+
+type Post = CollectionEntry<"blog">["data"];
+interface Props {
+    post: {
+        id: string;
+        data: Post;
+    };
+}
+
+const { post } = Astro.props as Props;
+---
+
+<div
+    class="bg-stone-50 p-4 mb-4 rounded-sm border-1 border-stone-500 hover:border-purple-600 hover:bg-purple-50 transition-colors"
+>
+    {/* Link to post with hover effect */}
+    {/* Tag pills floated inline with content */}
+    {
+        post.data.tags && post.data.tags.length > 0 ? (
+            <div class="float-right ml-2 mb-1 max-w-48">
+                {post.data.tags.map((tag) => (
+                    <div class="whitespace-nowrap mr-2 mb-1 inline-block">
+                        <TagPill href={`/tags/${tag}/`} title={tag} />
+                    </div>
+                ))}
+            </div>
+        ) : null
+    }
+
+    <a href={`/blog/${post.id}/`} class="block">
+        {/* Content with natural text flow around inline tags */}
+        <div>
+            <h3 class="font-bold">{post.data.title}</h3>
+            <p class="text-stone-500 text-base mt-2">
+                <span class="whitespace-nowrap">
+                    {
+                        post.data.pubDate.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        })
+                    }
+                </span>
+                &middot;
+                <span class="whitespace-nowrap">
+                    {post.data.author.name}
+                </span>
+            </p>
+            <p class="text-base text-stone-600">
+                {post.data.description}
+            </p>
+        </div>
+    </a>
+</div>
