@@ -11,8 +11,44 @@ const recentPosts = (await getCollection("blog"))
     <section class="border-2 border-purple-600 p-8 rounded-sm mb-6">
         <h1 class="text-4xl font-extrabold mb-6">About me</h1>
         <p class="text-lg text-stone-700 mb-4">
-            Explore my latest thoughts, tutorials, and insights on web
-            development, design, and more.
+            Hi, I'm Emma! I'm a software engineer fascinated by programming
+            languages, compiler design, implementation and their theory. This
+            blog will be an account of my tales as I journey through the world
+            of programming language theory and compiler construction.
+        </p>
+        <p class="text-lg text-stone-700 mb-4">
+            The driving project behind this blog is a project I have called <code
+                >LoxMocha</code
+            >. This is a language based off of the language <code>Lox</code> from
+            the book <a
+                href="https://craftinginterpreters.com/"
+                title="Crafting Interpreters"
+                class="text-purple-600 hover:underline"
+            >
+                crafting interpreters</a
+            > by Robert Nystrom. My goal is to build upon the foundation that was
+            laid out in the book and extend it for a more "compiled" world. This
+            involes adding features like:
+            <ul class="list-disc pl-6 text-purple-600">
+                <li>
+                    <div class="text-stone-700">
+                        A modern and robust type system
+                    </div>
+                </li>
+                <li>
+                    <div class="text-stone-700">
+                        Damas-Hindley Milner type checking
+                    </div>
+                </li>
+                <li>
+                    <div class="text-stone-700">Optimizations</div>
+                </li>
+                <li>
+                    <div class="text-stone-700">
+                        And importantly, RISC-V code generation
+                    </div>
+                </li>
+            </ul>
         </p>
     </section>
 
