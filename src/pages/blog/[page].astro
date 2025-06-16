@@ -19,7 +19,10 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<Layout title="Blog">
+<Layout
+    title="Blog"
+    description="List of blog posts documenting my journey through programming languages and compiler design."
+>
     <h2 class="text-2xl font-bold mb-6">Posts</h2>
     <ul>
         {
