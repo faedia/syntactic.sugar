@@ -1,5 +1,7 @@
 ---
 import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostPreview from "../../components/PostPreview.astro";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
@@ -11,6 +13,28 @@ export async function getStaticPaths() {
         params: { slug: tag },
     }));
 }
+
+const posts = (
+    await getCollection("blog", ({ data }) => {
+        return data.tags && data.tags.includes(Astro.params.slug);
+    })
+).sort((a, b) => {
+    return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+});
 ---
 
-{Astro.params.slug}
+<Layout
+    title="Blog"
+    description="List of blog posts documenting my journey through programming languages and compiler design."
+>
+    <h2 class="text-2xl font-bold mb-6">Tag:{Astro.params.slug}</h2>
+    <ul>
+        {
+            posts.map((post) => (
+                <li>
+                    <PostPreview post={post} />
+                </li>
+            ))
+        }
+    </ul>
+</Layout>

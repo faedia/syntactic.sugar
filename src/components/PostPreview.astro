@@ -14,7 +14,7 @@ const { post } = Astro.props as Props;
 ---
 
 <div
-    class="bg-stone-50 p-4 mb-4 rounded-sm border-1 border-stone-500 hover:border-purple-600 hover:bg-purple-50 transition-colors"
+    class="bg-zinc-50 border-zinc-500 hover:border-purple-600 hover:bg-purple-50 dark:bg-zinc-800 dark:hover:bg-purple-900 p-4 mb-4 rounded-sm border-1 transition-colors"
 >
     {/* Link to post with hover effect */}
     {/* Tag pills floated inline with content */}
@@ -22,7 +22,7 @@ const { post } = Astro.props as Props;
         post.data.tags && post.data.tags.length > 0 ? (
             <div class="float-right ml-2 mb-1 max-w-48">
                 {post.data.tags.map((tag) => (
-                    <div class="whitespace-nowrap mr-2 mb-1 inline-block">
+                    <div class="whitespace-nowrap mr-2 inline-block float-right text-sm mt-2 mb-2">
                         <TagPill href={`/tags/${tag}/`} title={tag} />
                     </div>
                 ))}
@@ -34,7 +34,9 @@ const { post } = Astro.props as Props;
         {/* Content with natural text flow around inline tags */}
         <div>
             <h3 class="font-bold">{post.data.title}</h3>
-            <p class="text-stone-500 text-base mt-2">
+            <p
+                class="text-zinc-500 text-base mt-2 dark:text-zinc-400 transition-colors"
+            >
                 <span class="whitespace-nowrap">
                     {
                         post.data.pubDate.toLocaleDateString("en-US", {
@@ -49,7 +51,9 @@ const { post } = Astro.props as Props;
                     {post.data.author.name}
                 </span>
             </p>
-            <p class="text-base text-stone-600">
+            <p
+                class="text-base text-zinc-600 dark:text-zinc-300 transition-colors"
+            >
                 {post.data.description}
             </p>
         </div>

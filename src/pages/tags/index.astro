@@ -1,5 +1,7 @@
 ---
 import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import TagPill from "../../components/TagPill.astro";
 
 const tags = (await getCollection("blog"))
     .flatMap((post) => post.data.tags || [])
@@ -7,17 +9,15 @@ const tags = (await getCollection("blog"))
     .sort();
 ---
 
-<ul class="list-disc pl-6">
-    {
-        tags.map((tag) => (
-            <li>
-                <a
-                    href={`/tags/${tag}`}
-                    class="text-purple-800 hover:underline"
-                >
-                    {tag}
-                </a>
-            </li>
-        ))
-    }
-</ul>
+<Layout>
+    <h2 class="text-2xl font-bold mb-6">Tags{Astro.params.slug}</h2>
+    <div class="flex flex-wrap gap-2 mb-1">
+        {
+            tags.map((tag) => (
+                <div class="text-lg m-2">
+                    <TagPill href={`/tags/${tag}/`} title={tag} />
+                </div>
+            ))
+        }
+    </div>
+</Layout>

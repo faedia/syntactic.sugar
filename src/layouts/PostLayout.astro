@@ -9,12 +9,16 @@ import TagPill from "../components/TagPill.astro";
 ---
 
 <Layout title={post.title} description={post.description}>
-    <div class="mb-8 border-2 border-purple-600 p-8 rounded-sm bg-stone-50">
+    <div
+        class="mb-8 border-2 border-purple-600 p-8 rounded-sm bg-zinc-50 dark:bg-zinc-800 transition-colors"
+    >
         <article>
             <h1 class="text-3xl font-extrabold">
                 {post.title}
             </h1>
-            <p class="text-stone-500 text-base mt-2 mb-4">
+            <p
+                class="text-zinc-500 text-base mt-2 mb-4 dark:text-zinc-300 transition-colors"
+            >
                 {
                     post.pubDate.toLocaleDateString("en-US", {
                         month: "long",
@@ -30,7 +34,7 @@ import TagPill from "../components/TagPill.astro";
                     post.tags && post.tags.length > 0 ? (
                         <ul class="flex flex-wrap gap-2 mb-4">
                             {post.tags.map((tag) => (
-                                <li>
+                                <li class="text-sm">
                                     <TagPill
                                         href={`/tags/${tag}/`}
                                         title={tag}
@@ -42,7 +46,9 @@ import TagPill from "../components/TagPill.astro";
                 }
             </div>
             <div
-                class="prose mx-auto !max-w-none prose-pre:mx-0 sm:prose-pre:mx-8 prose-pre:rounded- [&_svg]:max-h-[40rem] [&_svg]:mx-auto text-lg"
+                class="prose mx-auto !max-w-none prose-pre:mx-0 sm:prose-pre:mx-8 prose-pre:rounded- [&_svg]:max-h-[40rem] [&_svg]:mx-auto text-lg
+                prose-a:text-purple-600 dark:prose-a:text-purple-500 prose-a:hover:text-purple-700 dark:prose-a:hover:text-purple-400
+                dark:prose-invert prose-ul:list-disc prose-ul:marker:text-zinc-500 transition-colors"
             >
                 <slot />
             </div>
@@ -51,24 +57,72 @@ import TagPill from "../components/TagPill.astro";
     <!-- Giscus Comments here! -->
     <section
         id="comments"
-        class="mb-8 border-2 border-purple-600 p-8 rounded-sm bg-stone-50"
+        class="mb-8 border-2 border-purple-600 p-8 rounded-sm bg-zinc-50 dark:bg-zinc-800 transition-colors"
     >
         <h2>Comments</h2>
+        <div id="giscus-container"></div>
+        <script>
+            function getGiscusTheme() {
+                return document.documentElement.classList.contains("dark")
+                    ? "catppuccin_mocha"
+                    : "catppuccin_latte";
+            }
 
-        <script
-            src="https://giscus.app/client.js"
-            data-repo="faedia/syntactic.sugar"
-            data-repo-id="R_kgDOO8vXHQ"
-            data-category="General"
-            data-category-id="DIC_kwDOO8vXHc4CrlRt"
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="top"
-            data-theme="catppuccin_latte"
-            data-lang="en"
-            crossorigin="anonymous"
-            async></script>
+            function loadGiscus() {
+                const theme = getGiscusTheme();
+
+                // Create and configure the script element
+                const script = document.createElement("script");
+                script.src = "https://giscus.app/client.js";
+                script.setAttribute("data-repo", "faedia/syntactic.sugar");
+                script.setAttribute("data-repo-id", "R_kgDOO8vXHQ");
+                script.setAttribute("data-category", "General");
+                script.setAttribute("data-category-id", "DIC_kwDOO8vXHc4CrlRt");
+                script.setAttribute("data-mapping", "pathname");
+                script.setAttribute("data-strict", "0");
+                script.setAttribute("data-reactions-enabled", "1");
+                script.setAttribute("data-emit-metadata", "0");
+                script.setAttribute("data-input-position", "top");
+                script.setAttribute("data-theme", theme);
+                script.setAttribute("data-lang", "en");
+                script.setAttribute("crossorigin", "anonymous");
+                script.async = true;
+
+                // Append the script to load Giscus
+                document
+                    .getElementById("giscus-container")
+                    ?.appendChild(script);
+            }
+
+            function changeGiscusTheme(theme: string) {
+                const giscusFrame = document.querySelector(
+                    "iframe.giscus-frame",
+                ) as HTMLIFrameElement | null;
+                if (giscusFrame) {
+                    giscusFrame.contentWindow?.postMessage(
+                        { giscus: { setConfig: { theme } } },
+                        "https://giscus.app",
+                    );
+                }
+            }
+
+            // Load Giscus initially
+            loadGiscus();
+
+            // Watch for theme changes and update Giscus theme
+            let classWatcher = new MutationObserver(() => {
+                const newTheme = getGiscusTheme();
+                console.log(
+                    "Theme changed, updating Giscus theme to:",
+                    newTheme,
+                );
+                changeGiscusTheme(newTheme);
+            });
+
+            classWatcher.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ["class"],
+            });
+        </script>
     </section>
 </Layout>

@@ -19,7 +19,7 @@ import Nav from "./Nav.astro";
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-PJ8S2GH5DD"
             type="application/javascript"></script>
-        <script type="application/javascript">
+        <script is:inline type="application/javascript">
             window.dataLayer = window.dataLayer || [];
             function gtag() {
                 dataLayer.push(arguments);
@@ -29,13 +29,35 @@ import Nav from "./Nav.astro";
             gtag("config", "G-PJ8S2GH5DD");
         </script>
 
+        <script is:inline type="application/javascript">
+            const currentTheme = (() => {
+                const localTheme = localStorage?.getItem("theme");
+                if (localTheme && ["light", "dark"].includes(localTheme)) {
+                    return localTheme;
+                }
+                return window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light";
+            })();
+
+            if (currentTheme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+
+            window.localStorage.setItem("theme", currentTheme);
+        </script>
+
         <meta charset="utf-8" />
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <title>{title ? `${title} - ${config.title}` : config.title}</title>
     </head>
-    <body class="bg-stone-100 text-stone-900">
+    <body
+        class="bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50 transition-colors"
+    >
         <Nav />
     </body>
     <main class="max-w-4xl mx-auto p-6 text-lg font-nunito">
@@ -43,7 +65,7 @@ import Nav from "./Nav.astro";
     </main>
     <footer>
         <p
-            class="text-stone-500 text-center text-base mt-2 pb-5 pt-4 border-t border-stone-200"
+            class="text-zinc-500 text-center text-base mt-2 pb-5 pt-4 border-t border-zinc-200 dark:border-zinc-700 transition-colors"
         >
             &copy; {new Date().getFullYear()}
             {config.author.name}. All rights reserved.
