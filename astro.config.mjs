@@ -17,7 +17,8 @@ export default defineConfig({
         dark: false,
         default: "6",
       },
-      pad: 0,
+      pad: 10,
+      layout: 'dagre',
     }
   ),
   // This has to be last otherwise it won't work

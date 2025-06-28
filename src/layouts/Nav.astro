@@ -12,7 +12,6 @@ library.add(faToggleOn, faToggleOff, faRss);
 
 const toggleOn = icon({ prefix: "fas", iconName: "toggle-on" });
 const toggleOff = icon({ prefix: "fas", iconName: "toggle-off" });
-const rssIcon = icon({ prefix: "fas", iconName: "rss" });
 
 interface Link {
     href: string;
@@ -53,7 +52,7 @@ const links: Link[] = [
             <div class="flex items-center space-x-4">
                 <a
                     href="/"
-                    class="font-semibold text-2xl text-purple-800 hover:bg-purple-800 hover:text-zinc-50 transition-colors p-1 mt-3 mb-3 dark:text-purple-500"
+                    class="font-semibold text-2xl text-purple-800 hover:bg-purple-800 hover:text-zinc-50 transition-colors p-1 mt-3 mb-3 dark:text-purple-500 rounded-md px-2"
                 >
                     {config.title}
                 </a>
@@ -61,14 +60,18 @@ const links: Link[] = [
                 <div
                     id="toggle-theme"
                     class="text-purple-800 dark:text-purple-500 cursor-pointer transition-colors"
+                    aria-label="Toggle dark mode"
+                    title="Toggle dark mode"
                 >
                     <div
                         class="h-7 w-7 flex dark:hidden items-center justify-center"
+                        aria-hidden="true"
                     >
                         <Fragment set:html={toggleOn.html} />
                     </div>
                     <div
                         class="h-7 w-7 hidden dark:flex items-center justify-center"
+                        aria-hidden="true"
                     >
                         <Fragment set:html={toggleOff.html} />
                     </div>

@@ -14,7 +14,7 @@ const tags = (await getCollection("blog"))
     <div class="flex flex-wrap gap-2 mb-1">
         {
             tags.map((tag) => (
-                <div class="text-lg m-2">
+                <div class="text-lg font-semibold m-2">
                     <TagPill href={`/tags/${tag}/`} title={tag} />
                 </div>
             ))
